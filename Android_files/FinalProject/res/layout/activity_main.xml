@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+    
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical"
+	    android:gravity="center">
+	 
+	    <!--  Sample Dashboard screen with Two buttons -->
+	    <!--  Button to view all products screen -->
+
+		<ImageView
+		    android:id="@+id/imageView1"
+		    android:layout_width="95dp"
+		    android:layout_height="128dp"
+		    android:src="@drawable/logo" 
+		    android:scaleType="fitStart"/>"
+
+		<EditText
+		    android:id="@+id/editText1"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="textEmailAddress" >
+
+		    <requestFocus />
+		</EditText>
+
+		<EditText
+		    android:id="@+id/editText2"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:ems="10"
+		    android:inputType="textPassword" />
+
+	    <Button android:id="@+id/btnLogin"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Log-in"
+	        android:layout_marginTop="25dip"/>
+	 
+	    <!--  Button to create a new product screen -->
+	    <Button android:id="@+id/btnSignup"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Sign-up"
+	        android:layout_marginTop="25dip"/>
+	 
+	</LinearLayout>
+	
+</RelativeLayout>
