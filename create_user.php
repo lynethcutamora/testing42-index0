@@ -38,18 +38,18 @@
 		//check if row is inserted or not
 		if($master && $details){
 			//successfully inserted into database
-			$response["success"]=0;
+			$response["success"]=1;
 			$response["message"]="New account successfully created.";
-
-			//echoing JSON response
-			echo json_encode($response);
 		}else{
 			//failed to insert row
 			$response["success"]=0;
 			$response["message"]="Oops! An error occured.";
-
-			//echoing JSON response
-			echo json_encode($response);
 		}
+	}else{
+		//required fields is missing
+		$response["success"]=0;
+		$response["message"]="Required field(s) is missing";
 	}
+	//echoing JSON response
+	echo json_encode($response);
 ?>
