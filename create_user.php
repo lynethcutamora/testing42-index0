@@ -15,6 +15,8 @@
 
 	//get max id from the database
 	$id = mysql_query('SELECT MAX(userId) FROM user_md');
+	$id = mysql_fetch_row($id);
+	$id = (int)$id + 1;
 	//check for required fields
 	if(isset($_POST['userType']) && isset($_POST['fname']) 
 	&& isset($_POST['lname']) && isset($_POST['age'])
