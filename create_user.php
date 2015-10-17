@@ -34,8 +34,7 @@
 
 		//mysql inserting a new row into user master data & details
 		$master = mysql_query("INSERT INTO user_md(userId,userType) VALUES ('$id','$userType')");
-		$details = mysql_query("INSERT INTO user_dtl(userId,lName,fName,midInit,age,gender,address,emailAdd,pssWord)
-								VALUES ('$id','$lname','$fname','$midInit','$age','$gender','$address','$emailAdd','$pssWord')";
+		$details = mysql_query("INSERT INTO user_dtl(userId,lName,fName,midInit,age,gender,address,emailAdd,pssWord) VALUES ('$id','$lname','$fname','$midInit','$age','$gender','$address','$emailAdd','$pssWord')");
 
 		//check if row is inserted or not
 		if($master && $details){
