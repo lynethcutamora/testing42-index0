@@ -117,8 +117,7 @@ public class NewUser extends Activity{
 	                    "POST", params);
 	 
 	            // check log cat fro response
-	            Log.d("Create Response", json.toString());
-	 
+	          
 	            // check for success tag
 	            try {
 	                int success = json.getInt(TAG_SUCCESS);
@@ -131,7 +130,6 @@ public class NewUser extends Activity{
 	     
 	 
 	                    // closing this screen
-	                    finish();
 	                } else {
 	                    // failed to create product
 	                	Toast.makeText(NewUser.this, "Oops! something went wrong. Please Try again.", Toast.LENGTH_LONG).show();

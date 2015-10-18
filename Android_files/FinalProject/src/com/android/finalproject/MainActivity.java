@@ -21,12 +21,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 // Launching All products Activity
-            	try{
+            	
                 Intent i = new Intent(getApplicationContext(), NewUser.class);
                 startActivity(i);
-            	}catch(Exception e){
-            		Toast.makeText(getApplication(),""+e, 50).show();
-            	}
+            	
              
             }
         });
