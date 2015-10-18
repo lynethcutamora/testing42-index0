@@ -25,29 +25,34 @@ public final class R {
         public static final int logo=0x7f020001;
     }
     public static final class id {
-        public static final int EditText01=0x7f080008;
-        public static final int EditText03=0x7f08000b;
-        public static final int EditText04=0x7f080006;
         public static final int TextView01=0x7f080007;
-        public static final int TextView02=0x7f08000c;
-        public static final int TextView03=0x7f08000a;
+        public static final int TextView02=0x7f08000d;
+        public static final int TextView03=0x7f08000b;
         public static final int TextView04=0x7f080005;
-        public static final int TextView05=0x7f080010;
-        public static final int TextView06=0x7f080011;
-        public static final int TextView07=0x7f080014;
-        public static final int action_settings=0x7f080016;
+        public static final int TextView05=0x7f080011;
+        public static final int TextView06=0x7f080015;
+        public static final int TextView07=0x7f080019;
+        public static final int TextView08=0x7f080013;
+        public static final int action_settings=0x7f08001b;
+        public static final int btnCreateAccount=0x7f08001a;
         public static final int btnLogin=0x7f080003;
         public static final int btnSignup=0x7f080004;
-        public static final int button1=0x7f080015;
-        public static final int checkBox1=0x7f080013;
+        public static final int checkBox1=0x7f080018;
         public static final int editText1=0x7f080001;
         public static final int editText2=0x7f080002;
-        public static final int editText3=0x7f080012;
         public static final int imageView1=0x7f080000;
-        public static final int radio0=0x7f08000e;
-        public static final int radio1=0x7f08000f;
-        public static final int radioGroup1=0x7f08000d;
+        public static final int rFemale=0x7f08000f;
+        public static final int rMale=0x7f080010;
+        public static final int radioGroup1=0x7f08000e;
         public static final int textView1=0x7f080009;
+        public static final int txtAddress=0x7f080012;
+        public static final int txtAge=0x7f08000c;
+        public static final int txtConfirmPW=0x7f080017;
+        public static final int txtEmail=0x7f080014;
+        public static final int txtFname=0x7f080006;
+        public static final int txtLname=0x7f080008;
+        public static final int txtMI=0x7f08000a;
+        public static final int txtPW=0x7f080016;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

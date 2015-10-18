@@ -2,14 +2,35 @@ package com.android.finalproject;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
+	Button btnSignUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btnSignUp = (Button) findViewById(R.id.btnSignup);
+        
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+       	 
+            @Override
+            public void onClick(View view) {
+                // Launching All products Activity
+            	try{
+                Intent i = new Intent(getApplicationContext(), NewUser.class);
+                startActivity(i);
+            	}catch(Exception e){
+            		Toast.makeText(getApplication(),""+e, 50).show();
+            	}
+             
+            }
+        });
+        
     }
 
 

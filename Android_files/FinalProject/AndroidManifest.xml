@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+           
         <!-- Log-in Activity -->
         <activity
             android:name=".LogInActivity"
@@ -29,7 +30,7 @@
         </activity>
         <!-- Sign-up Activity -->
         <activity
-            android:name=".signUpActivity"
+            android:name=".NewUser"
             android:label="Sign Up" >
         </activity>
     </application>
