@@ -1,13 +1,25 @@
 package com.android.finalproject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
  
+
+
+
+
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
  
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -22,18 +35,11 @@ import android.widget.Toast;
 
 public class NewUser extends Activity{
 	//progress Dialog
-	private ProgressDialog pDialog;
+
 	EditText txtlname, txtfname, txtmi, txtage, txtaddress, txtemail, txtpssWord, txtcpssWord;
 	RadioButton rbtnmale, rbtnfemale;
 	Button btnCreate;
 	
-	JSONParser jsonParser = new JSONParser();
-	// url to create new product
-    private static String url_create_user = "http://localhost/testing42-index0/create_user.php";
- 
-    // JSON Node names
-    private static final String TAG_SUCCESS = "success";
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,111 +53,82 @@ public class NewUser extends Activity{
         txtaddress = (EditText) findViewById(R.id.txtAddress);
         txtemail = (EditText) findViewById(R.id.txtEmail);
         txtpssWord = (EditText) findViewById(R.id.txtPW);
-        txtpssWord = (EditText) findViewById(R.id.txtConfirmPW);
+        txtcpssWord = (EditText) findViewById(R.id.txtConfirmPW);
         rbtnmale = (RadioButton) findViewById (R.id.rMale);
         rbtnfemale = (RadioButton) findViewById (R.id.rFemale);
         btnCreate = (Button) findViewById (R.id.btnCreateAccount);
         // button click event
         btnCreate.setOnClickListener(new View.OnClickListener() {
  
-            @Override
-            public void onClick(View view) {
-                // creating new product in background thread
-                new CreateNewAccount().execute();
-            }
+         
+        
+    public void onClick(View arg0) {
+		InsertData task1 = new InsertData();
+		task1.execute(new String[]{"http://192.168.43.5/NewFinalProject/insert.php"});
+		
+		
+		}
         });
-    }
-    
-    /**
-     * Background Async Task to Create new product
-     * */
-    class CreateNewAccount extends AsyncTask<String, String, String> {
- 
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(NewUser.this);
-            pDialog.setMessage("Creating Your Account..");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
         }
- 
-        /**
-         * Creating product
-         * */
-        protected String doInBackground(String... args) {
-            String lname = txtlname.getText().toString();
-            String fname = txtfname.getText().toString();
-            String mi = txtmi.getText().toString();
-            String age = txtage.getText().toString();
-            String address = txtaddress.getText().toString();
-            String email = txtemail.getText().toString();
-            String pw = txtpssWord.getText().toString();
-            String confirm = txtcpssWord.getText().toString();
-            String gender;
-            if(rbtnmale.isChecked()==true){
-            	gender = "M";
-            }else
-            	gender = "F";
-            
- 
-            // Building Parameters
-            if(pw==confirm){
-	            List<NameValuePair> params = new ArrayList<NameValuePair>();
-	            params.add(new BasicNameValuePair("userType","ideator"));
-	            params.add(new BasicNameValuePair("fname", fname)); 
-	            params.add(new BasicNameValuePair("lname", lname)); 
-	            params.add(new BasicNameValuePair("age", age));
-	            params.add(new BasicNameValuePair("gender", gender)); 
-	            params.add(new BasicNameValuePair("address", address)); 
-	            params.add(new BasicNameValuePair("emailAdd", email)); 
-	            params.add(new BasicNameValuePair("pssWord", pw));
-	            
-	            // getting JSON Object
-	            // Note that create product url accepts POST method
-	            JSONObject json = jsonParser.makeHttpRequest(url_create_user,
-	                    "POST", params);
-	 
-	            // check log cat fro response
-	          
-	            // check for success tag
-	            try {
-	                int success = json.getInt(TAG_SUCCESS);
-	 
-	                if (success == 1) {
-	                    // successfully created product
-	                    //Intent i = new Intent(getApplicationContext(), AllProductsActivity.class);
-	                    //startActivity(i);
-	                	Toast.makeText(NewUser.this, "Account successfully created.", Toast.LENGTH_LONG).show();
-	     
-	 
-	                    // closing this screen
-	                } else {
-	                    // failed to create product
-	                	Toast.makeText(NewUser.this, "Oops! something went wrong. Please Try again.", Toast.LENGTH_LONG).show();
-	           	     
-	                }
-	            } catch (JSONException e) {
-	                e.printStackTrace();
-	            }
-            }else
-            	Toast.makeText(NewUser.this, "Mismatched password. Please Try again.", Toast.LENGTH_LONG).show();
- 
- 
-            return null;
-        }
- 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once done
-            pDialog.dismiss();
-        }
- 
-    }
+	private class InsertData extends AsyncTask<String, Void, Boolean>{
+		ProgressDialog dialog = new ProgressDialog(NewUser.this);
+		@Override
+		protected void onPreExecute() {
+			dialog.setMessage("Sending Data...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			for(String url1 : urls){
+				
+				try {
+					String gender;
+					if(rbtnmale.isChecked()==true){
+		            	gender = "M";
+		            }else
+		            	gender = "F";
+				
+					ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+					pairs.add(new BasicNameValuePair("fname", txtlname.getText().toString()));
+					pairs.add(new BasicNameValuePair("lname", txtfname.getText().toString()));
+					pairs.add(new BasicNameValuePair("midInit", txtmi.getText().toString()));
+					pairs.add(new BasicNameValuePair("age", txtage.getText().toString()));
+					pairs.add(new BasicNameValuePair("gender", gender));
+					pairs.add(new BasicNameValuePair("address", txtaddress.getText().toString()));
+					pairs.add(new BasicNameValuePair("emailAdd", txtemail.getText().toString()));
+					pairs.add(new BasicNameValuePair("pssWord", txtpssWord.getText().toString()));
+					HttpClient client = new DefaultHttpClient();
+					HttpPost post = new HttpPost(url1);
+					post.setEntity(new UrlEncodedFormEntity(pairs));
+					
+					HttpResponse response = client.execute(post);
+					
+				} catch (ClientProtocolException e) {
+					Toast.makeText(NewUser.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				} catch (IOException e) {
+					Toast.makeText(NewUser.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				}
+				
+			}
+			
+			return true;
+			
+			}
+	
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(result == true){
+				Toast.makeText(NewUser.this, "Insert Success", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Toast.makeText(NewUser.this, "Error", Toast.LENGTH_LONG).show();
+			}
+			dialog.dismiss();
+		}
+		
+	}
+
 }

@@ -1,0 +1,130 @@
+package com.android.finalproject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+ 
+
+
+
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+ 
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+public class NewUser extends Activity{
+	//progress Dialog
+
+	EditText txtlname, txtfname, txtmi, txtage, txtaddress, txtemail, txtpssWord, txtcpssWord;
+	RadioButton rbtnmale, rbtnfemale;
+	Button btnCreate;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.sign_up_activity);
+
+    	// Edit Text
+        txtlname = (EditText) findViewById(R.id.txtLname);
+        txtfname = (EditText) findViewById(R.id.txtFname);
+        txtmi = (EditText) findViewById(R.id.txtMI);
+        txtage = (EditText) findViewById(R.id.txtAge);
+        txtaddress = (EditText) findViewById(R.id.txtAddress);
+        txtemail = (EditText) findViewById(R.id.txtEmail);
+        txtpssWord = (EditText) findViewById(R.id.txtPW);
+        txtcpssWord = (EditText) findViewById(R.id.txtConfirmPW);
+        rbtnmale = (RadioButton) findViewById (R.id.rMale);
+        rbtnfemale = (RadioButton) findViewById (R.id.rFemale);
+        btnCreate = (Button) findViewById (R.id.btnCreateAccount);
+        // button click event
+        btnCreate.setOnClickListener((OnClickListener) this);
+ 
+         
+        }
+    public void onClick(View arg0) {
+		InsertData task1 = new InsertData();
+		task1.execute(new String[]{"http://192.168.43.5/NewFinalProject/insert.php"});
+		
+		Intent in = new Intent(this, MainActivity.class);
+		startActivity(in);
+	}
+	
+	private class InsertData extends AsyncTask<String, Void, Boolean>{
+		ProgressDialog dialog = new ProgressDialog(NewUser.this);
+		@Override
+		protected void onPreExecute() {
+			dialog.setMessage("Sending Data...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			for(String url1 : urls){
+				
+				try {
+					String gender;
+					if(rbtnmale.isChecked()==true){
+		            	gender = "M";
+		            }else
+		            	gender = "F";
+					ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+					pairs.add(new BasicNameValuePair("fname", txtlname.getText().toString()));
+					pairs.add(new BasicNameValuePair("lname", txtfname.getText().toString()));
+					pairs.add(new BasicNameValuePair("midInit", txtmi.getText().toString()));
+					pairs.add(new BasicNameValuePair("age", txtage.getText().toString()));
+					pairs.add(new BasicNameValuePair("gender", gender));
+					pairs.add(new BasicNameValuePair("address", txtaddress.getText().toString()));
+					pairs.add(new BasicNameValuePair("emailAdd", txtemail.getText().toString()));
+					pairs.add(new BasicNameValuePair("pssWord", txtpssWord.getText().toString()));
+					HttpClient client = new DefaultHttpClient();
+					HttpPost post = new HttpPost(url1);
+					post.setEntity(new UrlEncodedFormEntity(pairs));
+					
+					HttpResponse response = client.execute(post);
+				} catch (ClientProtocolException e) {
+					Toast.makeText(NewUser.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				} catch (IOException e) {
+					Toast.makeText(NewUser.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(result == true){
+				Toast.makeText(NewUser.this, "Insert Success", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Toast.makeText(NewUser.this, "Error", Toast.LENGTH_LONG).show();
+			}
+			dialog.dismiss();
+		}
+		
+	}
+
+}

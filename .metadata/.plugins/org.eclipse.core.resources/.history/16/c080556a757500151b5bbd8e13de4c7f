@@ -1,0 +1,98 @@
+package com.example.mysqlconnection1;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class InsertDataActivity extends Activity implements OnClickListener {
+	EditText etName, etTel, etMajor;
+	Button btnInsert;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_insert);
+		etName = (EditText)findViewById(R.id.etName);
+		etTel = (EditText)findViewById(R.id.etTel);
+		etMajor = (EditText)findViewById(R.id.etMajor);
+		btnInsert = (Button)findViewById(R.id.btnInsert);
+		btnInsert.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		InsertData task1 = new InsertData();
+		task1.execute(new String[]{"http://10.0.2.2:8012/norton2/insert.php"});
+		
+		Intent in = new Intent(this, ReadDataActivity.class);
+		startActivity(in);
+	}
+	
+	private class InsertData extends AsyncTask<String, Void, Boolean>{
+		ProgressDialog dialog = new ProgressDialog(InsertDataActivity.this);
+		@Override
+		protected void onPreExecute() {
+			dialog.setMessage("Sending Data...");
+			dialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			for(String url1 : urls){
+				
+				try {
+					ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+					pairs.add(new BasicNameValuePair("txtName", etName.getText().toString()));
+					pairs.add(new BasicNameValuePair("txtTel", etTel.getText().toString()));
+					pairs.add(new BasicNameValuePair("txtMajor", etMajor.getText().toString()));
+					
+					HttpClient client = new DefaultHttpClient();
+					HttpPost post = new HttpPost(url1);
+					post.setEntity(new UrlEncodedFormEntity(pairs));
+					
+					HttpResponse response = client.execute(post);
+				} catch (ClientProtocolException e) {
+					Toast.makeText(InsertDataActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				} catch (IOException e) {
+					Toast.makeText(InsertDataActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(result == true){
+				Toast.makeText(InsertDataActivity.this, "Insert Success", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Toast.makeText(InsertDataActivity.this, "Error", Toast.LENGTH_LONG).show();
+			}
+			dialog.dismiss();
+		}
+		
+	}
+
+}
